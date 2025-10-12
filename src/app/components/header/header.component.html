@@ -1,0 +1,41 @@
+<header class="header">
+    <div class="search-container">
+        <div class="search-box">
+            <i class="fas fa-search search-icon"></i>
+            <input
+                type="text"
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="onSearchChange()"
+                placeholder="Rechercher..."
+                class="search-input"
+            >
+        </div>
+    </div>
+
+    <div class="category-container" [class.show]="showCategories">
+        <button class="category-btn" (click)="toggleCategories()">
+            <i class="fas fa-filter"></i>
+        </button>
+    </div>
+
+    <div class="categories-dropdown" [class.show]="showCategories">
+        <div class="dropdown-content">
+            <div
+                *ngFor="let category of categories"
+                class="category-item"
+                [class.active]="category === selectedCategory"
+                (click)="selectCategory(category)"
+            >
+                <i class="fas" [class]="'fas ' + getCategoryIcon(category)"></i>
+                <span>{{ category | titlecase }}</span>
+                <span class="item-count" *ngIf="getCategoryCount(category)">
+                    {{getCategoryCount(category)}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <button class="camera-btn" (click)="openCamera()">
+        <i class="fas fa-camera"></i>
+    </button>
+</header>

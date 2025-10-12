@@ -1,0 +1,44 @@
+<nav class="navbar">
+    <a href="#" class="logo">
+        <i class="fas fa-code"></i>
+        MonLogo
+    </a>
+
+    <div class="nav-right">
+      <a routerLink="/add-product" class="publish-link" *ngIf="isLoggedIn">
+            <i class="fas fa-plus"></i>
+            Publier
+        </a>
+        <div class="notification-icon" [class.has-notifications]="hasNotifications" *ngIf="isLoggedIn">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
+            </svg>
+            <span class="notification-badge" *ngIf="notificationCount > 0">
+                {{ notificationCount }}
+            </span>
+        </div>
+
+
+
+        <div class="avatar-container" *ngIf="isLoggedIn">
+            <div class="avatar" (click)="toggleDropdown()" [class.active]="isDropdownOpen">
+                {{ userInitials }}
+            </div>
+            <div class="dropdown" [class.show]="isDropdownOpen">
+                <div class="dropdown-item" (click)="handleProfile()">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </div>
+                <div class="dropdown-item" (click)="handleSettings()">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </div>
+                <div class="dropdown-item" (click)="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </div>
+            </div>
+        </div>
+        <a routerLink="/login" class="login-btn" *ngIf="!isLoggedIn">Se connecter</a>
+    </div>
+</nav>
