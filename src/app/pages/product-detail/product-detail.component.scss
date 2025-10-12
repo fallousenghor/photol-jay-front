@@ -41,20 +41,6 @@
   overflow: hidden;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   padding: 2rem;
-
-  .product-info-section {
-    .product-header {
-      margin-bottom: 2rem;
-
-      .product-name {
-        font-size: 2rem;
-        font-weight: 600;
-        color: #2c3e50;
-        margin: 0;
-        line-height: 1.2;
-      }
-    }
-  }
 }
 
 /* --- Section images --- */
@@ -66,7 +52,6 @@
 
   .image-gallery {
     .main-image {
-      position: relative;
       border-radius: 16px;
       overflow: hidden;
       background: #ffffff;
@@ -82,6 +67,7 @@
       display: flex;
       gap: 1rem;
       margin-top: 1.5rem;
+      justify-content: center;
 
       .thumbnail {
         width: 80px;
@@ -90,10 +76,10 @@
         overflow: hidden;
         cursor: pointer;
         opacity: 0.6;
-        transition: all 0.3s ease;
         border: 2px solid transparent;
-        background-color: #ffffff;
+        background: #ffffff;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
 
         &.active {
           opacity: 1;
@@ -114,6 +100,7 @@
     }
   }
 
+  /* --- Boutons de navigation slider --- */
   .slider-btn {
     position: absolute;
     top: 50%;
@@ -174,49 +161,47 @@
       }
     }
   }
-
-  .product-image {
-    width: 100%;
-    max-width: 500px;
-    border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    transition: opacity 0.3s ease;
-  }
 }
 
 /* --- Section infos produit --- */
 .product-info-section {
   .product-name {
     font-size: 2rem;
-    color: #2c3e50;
     font-weight: 600;
+    color: #2c3e50;
     margin-bottom: 20px;
   }
 
-    .price-section {
-      margin-bottom: 2rem;
-      border-bottom: 1px solid #e9ecef;
-      padding-bottom: 2rem;
+  .price-section {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 2rem;
 
-      .price-wrapper {
-        display: flex;
-        align-items: baseline;
-        gap: 4px;
+    .price-wrapper {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
 
-        .currency {
-          font-size: 1.5rem;
-          color: #2c3e50;
-          font-weight: 500;
-        }
-
-        .current-price {
-          font-size: 2.5rem;
-          font-weight: 700;
-          color: #2c3e50;
-          letter-spacing: -0.5px;
-        }
+      .currency {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        font-weight: 500;
       }
-    }  .product-description {
+
+      .current-price {
+        font-family: 'Roboto', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        background-color: rgba(44, 62, 80, 0.05);
+      }
+    }
+  }
+
+  .product-description {
     font-size: 1rem;
     line-height: 1.6;
     color: #555;
@@ -304,7 +289,7 @@
       }
 
       &.whatsapp-btn {
-        background: #25D366;
+        background: #25d366;
       }
 
       &.email-btn {
@@ -327,45 +312,25 @@
   .product-detail {
     grid-template-columns: 1fr;
     gap: 20px;
-    padding: 0;
+    padding: 1rem;
   }
 
   .product-image-section {
     padding: 0;
-    margin: -2rem -2rem 0;
     border-radius: 0;
 
-    .main-image {
-      border-radius: 0;
-
-      img {
-        height: 300px;
-        width: 100%;
-        object-fit: contain;
-      }
+    .main-image img {
+      height: 300px;
+      object-fit: contain;
     }
 
     .image-thumbnails {
       padding: 1rem;
       justify-content: center;
-      background: #ffffff;
 
       .thumbnail {
         width: 60px;
         height: 60px;
-      }
-    }
-
-    .slider-btn {
-      width: 36px;
-      height: 36px;
-
-      &.prev-btn {
-        left: 8px;
-      }
-
-      &.next-btn {
-        right: 8px;
       }
     }
   }
@@ -376,11 +341,6 @@
     .product-name {
       font-size: 1.5rem;
     }
-  }
-
-  .price-section {
-    flex-direction: column;
-    align-items: flex-start;
   }
 
   .seller-info {
@@ -400,19 +360,8 @@
     margin-bottom: 1rem;
   }
 
-  .product-image-section {
-    .main-image img {
-      height: 250px;
-    }
-
-    .image-thumbnails {
-      gap: 0.5rem;
-
-      .thumbnail {
-        width: 50px;
-        height: 50px;
-      }
-    }
+  .product-image-section .main-image img {
+    height: 250px;
   }
 
   .product-info-section .product-name {
@@ -421,9 +370,5 @@
 
   .contact-buttons {
     justify-content: center;
-  }
-
-  .seller-info {
-    margin: 0.5rem 0;
   }
 }

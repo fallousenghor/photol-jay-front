@@ -25,6 +25,14 @@
       </div>
 
       <div class="form-group">
+        <label for="categoryId" class="form-label">Catégorie (optionnel)</label>
+        <select id="categoryId" formControlName="categoryId" class="form-input">
+          <option value="">Sélectionner une catégorie</option>
+          <option *ngFor="let category of categories" [ngValue]="category.id">{{ category.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
         <label class="form-label">Photos</label>
         <button type="button" (click)="takePhoto()" class="camera-btn">Prendre une Photo</button>
         <div class="image-previews">

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
@@ -6,6 +6,8 @@ import { LoaderComponent } from '../../components/loader/loader.component';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.interface';
 import { UiService } from '../../services/ui.service';
+import { FilterService } from '../../services/filter.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -14,22 +16,32 @@ import { UiService } from '../../services/ui.service';
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   isLoading = true;
   isPullingToRefresh = false;
   startY = 0;
   private readonly PULL_THRESHOLD = 80;
   isFavorite: any;
+  private filterSubscription: Subscription = new Subscription();
 
   constructor(
     private productService: ProductService,
     private uiService: UiService,
-    private router: Router
+    private router: Router,
+    private filterService: FilterService
   ) {}
 
   ngOnInit(): void {
     this.loadProducts();
+    // Subscribe to filter changes
+    this.filterSubscription = this.filterService.selectedCategoryId$.subscribe(categoryId => {
+      this.loadProducts(categoryId);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.filterSubscription.unsubscribe();
   }
 
   @HostListener('touchstart', ['$event'])
@@ -59,9 +71,9 @@ export class ProductsComponent implements OnInit {
     this.isPullingToRefresh = false;
   }
 
-  loadProducts(): void {
+  loadProducts(categoryId?: number | null): void {
     this.isLoading = true;
-    this.productService.getProducts().subscribe({
+    this.productService.getProducts(categoryId || undefined).subscribe({
       next: (products) => {
         this.products = products;
         this.isLoading = false;

@@ -5,11 +5,12 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.interface';
 import { LoaderComponent } from '../../components/loader/loader.component';
 import { UiService } from '../../services/ui.service';
+import { CurrencyPipe } from '../../pipes/currency.pipe';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, LoaderComponent],
+  imports: [CommonModule, LoaderComponent, CurrencyPipe],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })

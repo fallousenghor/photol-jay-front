@@ -20,8 +20,9 @@
 
     <div class="categories-dropdown" [class.show]="showCategories">
         <div class="dropdown-content">
+            <!-- Static categories -->
             <div
-                *ngFor="let category of categories"
+                *ngFor="let category of categoriesList"
                 class="category-item"
                 [class.active]="category === selectedCategory"
                 (click)="selectCategory(category)"
@@ -31,6 +32,16 @@
                 <span class="item-count" *ngIf="getCategoryCount(category)">
                     {{getCategoryCount(category)}}
                 </span>
+            </div>
+            <!-- Dynamic categories from API -->
+            <div
+                *ngFor="let category of categories"
+                class="category-item"
+                [class.active]="category.name === selectedCategory"
+                (click)="selectCategory(category.name)"
+            >
+                <i class="fas fa-folder"></i>
+                <span>{{ category.name | titlecase }}</span>
             </div>
         </div>
     </div>

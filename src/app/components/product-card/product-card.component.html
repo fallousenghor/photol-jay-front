@@ -9,7 +9,7 @@
     <div class="product-info">
         <h3 class="product-name">{{product.title}}</h3>
         <div class="price-container">
-            <span class="current-price">${{getPrice()}}</span>
+            <span class="current-price">{{product.price | currency}}</span>
         </div>
         <button class="view-more-btn" (click)="viewDetails()">
             <i class="fas fa-arrow-right"></i>

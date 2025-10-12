@@ -3,6 +3,13 @@ export interface ProductImage {
   url: string;
 }
 
+export interface Category {
+  id: number;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface User {
   id: number;
   email: string;
@@ -20,6 +27,8 @@ export interface Product {
   price: number | null;
   userId: number;
   user?: User;
+  categoryId?: number | null;
+  category?: Category | null;
   isApproved: boolean;
   priority: boolean;
   views: number;
@@ -34,5 +43,6 @@ export interface CreateProduct {
   description: string;
   price?: number;
   userId: number;
+  categoryId?: number;
   expiresAt: Date;
 }
