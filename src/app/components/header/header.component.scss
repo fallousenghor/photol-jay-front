@@ -23,32 +23,7 @@
     position: relative;
 }
 
-.camera-btn {
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: #3498db;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5rem;
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-    z-index: 1000;
-    transition: transform 0.2s ease;
 
-    &:active {
-        transform: scale(0.95);
-    }
-
-    i {
-        color: #ffffff;
-    }
-}
 
 .search-box {
     position: relative;
@@ -294,14 +269,7 @@
         font-size: 1rem;
     }
 
-    .camera-btn {
-        bottom: 1rem;
-        right: 1rem;
-        width: 64px;
-        height: 64px;
-        font-size: 1.75rem;
-        box-shadow: 0 4px 16px rgba(52, 152, 219, 0.4);
-    }
+
 
     .categories-dropdown {
         position: fixed;

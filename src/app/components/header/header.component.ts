@@ -74,10 +74,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.categoryCounts[category] || 0;
   }
 
-  openCamera(): void {
-    console.log('Opening camera...');
-    // TODO: Implémenter la capture photo
-  }
+
 
   onSearchChange(): void {
     this.searchChanged.emit(this.searchTerm);
