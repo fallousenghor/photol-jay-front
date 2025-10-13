@@ -1,13 +1,14 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Product } from '../../models/product.interface';
 import { ImageService } from '../../services/image.service';
 import { DEFAULT_IMAGE_BASE64 } from '../../constants/images';
+import { CfaPipe } from '../../pipes/cfa.pipe';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CfaPipe],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss'
 })
