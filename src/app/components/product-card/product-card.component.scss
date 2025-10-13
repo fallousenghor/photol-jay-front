@@ -9,13 +9,18 @@
   transition: transform 0.1s ease, background-color 0.1s ease;
 
   @media (min-width: 768px) {
-    border-radius: 12px;
+    border-radius: 20px;
     margin-bottom: 0.5rem;
   }
 
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
   &:active {
-    transform: scale(0.98);
-    background-color: #f8f9fa;
+    transform: scale(0.98) translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 
   // --- Image Produit ---
@@ -24,6 +29,7 @@
     width: 100%;
     padding-top: 100%; // Ratio 1:1
     overflow: hidden;
+    border-radius: 12px 12px 0 0;
 
     img {
       position: absolute;
@@ -31,7 +37,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.3s ease;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
       &:hover {
         transform: scale(1.05);
@@ -55,26 +61,29 @@
   // --- Nombre de vues ---
   .views-counter {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 16px;
-    height: 28px;
-    padding: 0 10px;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
+    border-radius: 20px;
+    height: 32px;
+    padding: 0 12px;
     display: flex;
     align-items: center;
     color: white;
-    font-size: 0.8rem;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    font-size: 0.85rem;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
     i {
-      margin-right: 5px;
-      font-size: 0.9rem;
+      margin-right: 6px;
+      font-size: 1rem;
+      opacity: 0.9;
     }
 
     span {
-      font-weight: 500;
+      font-weight: 600;
     }
   }
 
@@ -82,24 +91,26 @@
   .product-info {
     position: relative;
     padding: 1rem;
+    background: white;
 
     .product-name {
-      margin: 0 0 0.35rem;
-      font-weight: 500;
+      margin: 0 0 0.5rem;
+      font-weight: 600;
       color: #2c3e50;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      line-height: 1.3;
-      font-size: 0.85rem;
+      line-height: 1.4;
+      font-size: 0.9rem;
+      letter-spacing: -0.01em;
 
       @media (min-width: 480px) {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
       }
 
       @media (min-width: 768px) {
-        font-size: 0.875rem;
-        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+        margin-bottom: 0.6rem;
       }
     }
 
@@ -108,21 +119,18 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      margin-bottom: 0.75rem;
+      margin-bottom: 1rem;
       flex-wrap: wrap;
 
       .current-price {
         font-family: 'Roboto', sans-serif;
         font-weight: 700;
-        font-size: 1.1rem;
-        background: linear-gradient(135deg, #2c3e50, #3498db);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        font-size: 1.2rem;
+        color: #2c3e50;
+        letter-spacing: -0.02em;
 
         @media (min-width: 768px) {
-          font-size: 1.125rem;
+          font-size: 1.3rem;
         }
       }
 
@@ -130,35 +138,41 @@
         font-size: 0.95rem;
         color: #95a5a6;
         text-decoration: line-through;
+        opacity: 0.7;
       }
     }
 
     // --- Bouton voir plus ---
     .view-more-btn {
       position: absolute;
-      bottom: 0.75rem;
-      right: 0.75rem;
-      width: 36px;
-      height: 36px;
-      background-color: #2c3e50;
+      bottom: 1rem;
+      right: 1rem;
+      width: 44px;
+      height: 44px;
+      background: #2c3e50;
       color: white;
       border: none;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
-      transition: transform 0.1s ease, background-color 0.1s ease;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background: #2980b9;
+      }
 
       &:active {
-        background-color: #2980b9;
-        transform: scale(0.92);
+        background: #2980b9;
+        transform: scale(0.95);
+        transition: transform 0.1s ease, background-color 0.1s ease;
       }
 
       i {
-        font-size: 0.9rem;
+        font-size: 1rem;
       }
     }
   }

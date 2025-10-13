@@ -9,11 +9,13 @@
 
 .login-card {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 40px;
   width: 100%;
   max-width: 400px;
+  position: relative;
+  z-index: 1;
 }
 
 .login-title {
@@ -21,7 +23,8 @@
   margin-bottom: 30px;
   color: #2c3e50;
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .login-form {
@@ -47,6 +50,9 @@
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   font-size: 1rem;
+  background: white;
+  color: #2c3e50;
+  font-weight: 500;
   transition: border-color 0.2s ease;
 
   &:focus {
@@ -78,6 +84,12 @@
     background: #2980b9;
     transform: scale(0.98);
     transition: transform 0.1s ease, background-color 0.1s ease;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
   }
 }
 

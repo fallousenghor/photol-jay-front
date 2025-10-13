@@ -1,9 +1,8 @@
-# TODO: Intégration Authentification Frontend
+# TODO: Move Navbar and Header to Default Layout
 
-- [x] Mettre à jour app.config.ts pour ajouter provideHttpClient
-- [x] Créer models/user.interface.ts avec interfaces User, RegisterRequest, LoginRequest, LoginResponse
-- [x] Créer services/auth.service.ts avec méthodes register et login, gestion du token
-- [x] Modifier signup.component.html : changer "Nom complet" en "Nom d'utilisateur"
-- [x] Mettre à jour signup.component.ts : ajouter ReactiveFormsModule, FormGroup, logique d'inscription
-- [x] Mettre à jour login.component.ts : ajouter ReactiveFormsModule, FormGroup, logique de connexion
-- [x] Tester l'intégration : lancer backend et frontend, tester inscription et connexion
+- [x] Update `frontend/src/app/layouts/default-layout.component.ts`: Add imports for NavbarComponent, HeaderComponent, FilterService; add event handling methods; update template to include navbar and header with event bindings.
+- [x] Update `frontend/src/app/app.component.html`: Remove navbar and header.
+- [x] Update `frontend/src/app/app.component.ts`: Remove imports and methods related to navbar/header.
+- [x] Build the application successfully (no compilation errors).
+- [x] Test the application to ensure navbar and header appear only on default layout pages, not admin (verified via code review: AdminLayoutComponent has only <router-outlet>, DefaultLayoutComponent has navbar and header).
+- [x] Verify search and category filtering still work on user pages (event handlers moved to DefaultLayoutComponent, same logic preserved).

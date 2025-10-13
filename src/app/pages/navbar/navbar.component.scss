@@ -59,7 +59,7 @@
 
 .notification-icon {
     position: relative;
-    width: 44px; // Un peu plus grand pour être plus facile à toucher
+    width: 44px;
     height: 44px;
     border-radius: 50%;
     display: flex;
@@ -77,14 +77,12 @@
 
     &:hover {
         background: rgba(255, 255, 255, 0.2);
-        transform: translateY(-2px);
     }
 
     svg {
         width: 20px;
         height: 20px;
         fill: white;
-        transition: transform 0.3s ease;
     }
 
     .notification-badge {
@@ -96,7 +94,6 @@
         background-color: #e74c3c;
         border-radius: 50%;
         border: 2px solid #2c3e50;
-        animation: pulse 2s infinite;
     }
 }
 
@@ -114,14 +111,13 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease;
     font-size: 0.9rem;
     font-weight: 500;
     border: 2px solid rgba(255, 255, 255, 0.2);
 
     &:hover {
         background-color: rgba(255, 255, 255, 0.25);
-        transform: translateY(-2px);
         border-color: rgba(255, 255, 255, 0.4);
     }
 }
@@ -131,8 +127,6 @@
     top: 100%;
     right: 0;
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     border-radius: 12px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     min-width: 180px;
@@ -203,20 +197,17 @@
     text-decoration: none;
     border-radius: 6px;
     font-weight: 500;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease;
     border: none;
     cursor: pointer;
     font-size: 0.9rem;
 
     &:hover {
         background-color: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
     }
 
     &:active {
-        transform: translateY(0);
-        box-shadow: 0 2px 6px rgba(52, 152, 219, 0.3);
+        background-color: #2980b9;
     }
 }
 
