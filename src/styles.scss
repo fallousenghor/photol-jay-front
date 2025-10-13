@@ -10,7 +10,9 @@ $theme: mat.define-theme((
   ),
 ));
 
-@include mat.all-component-themes($theme);
+:root {
+  @include mat.all-component-themes($theme);
+}
 
 /* Mobile-first global styles */
 * {
