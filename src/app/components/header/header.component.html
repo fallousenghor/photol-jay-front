@@ -24,7 +24,7 @@
             <div
                 *ngFor="let category of categoriesList"
                 class="category-item"
-                [class.active]="category === selectedCategory"
+                [class.active]="category === (selectedCategoryId === null ? 'all' : '')"
                 (click)="selectCategory(category)"
             >
                 <i class="fas" [class]="'fas ' + getCategoryIcon(category)"></i>
@@ -37,7 +37,7 @@
             <div
                 *ngFor="let category of categories"
                 class="category-item"
-                [class.active]="category.name === selectedCategory"
+                [class.active]="category.id === selectedCategoryId"
                 (click)="selectCategory(category.name)"
             >
                 <i class="fas fa-folder"></i>

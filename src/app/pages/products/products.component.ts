@@ -25,6 +25,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
   isFavorite: any;
   private filterSubscription: Subscription = new Subscription();
 
+  currentCategoryId?: number;
+
   constructor(
     private productService: ProductService,
     private uiService: UiService,
@@ -73,7 +75,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   loadProducts(categoryId?: number | null): void {
     this.isLoading = true;
-    this.productService.getProducts(categoryId || undefined).subscribe({
+    this.currentCategoryId = categoryId || undefined;
+    this.productService.getProducts(this.currentCategoryId).subscribe({
       next: (products) => {
         this.products = products;
         this.isLoading = false;

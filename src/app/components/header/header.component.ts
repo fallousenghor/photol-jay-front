@@ -14,10 +14,10 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   @Output() searchChanged = new EventEmitter<string>();
-  @Output() categorySelected = new EventEmitter<string>();
+  @Output() categorySelected = new EventEmitter<number | null>();
 
   searchTerm: string = '';
-  selectedCategory: string = 'all';
+  selectedCategoryId: number | null = null;
   showCategories: boolean = false;
   categories: Category[] = [];
   private subscription: Subscription = new Subscription();
@@ -87,9 +87,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.showCategories = !this.showCategories;
   }
 
-  selectCategory(category: string): void {
-    this.selectedCategory = category;
+  selectCategory(categoryName: string): void {
+    // Handle static categories
+    if (categoryName === 'all') {
+      this.selectedCategoryId = null;
+    } else {
+      // For static categories that don't have IDs, keep as null
+      // For dynamic categories, find the category by name
+      const dynamicCategory = this.categories.find(cat => cat.name === categoryName);
+      this.selectedCategoryId = dynamicCategory ? dynamicCategory.id : null;
+    }
+
     this.showCategories = false;
-    this.categorySelected.emit(category);
+    this.categorySelected.emit(this.selectedCategoryId);
   }
 }
