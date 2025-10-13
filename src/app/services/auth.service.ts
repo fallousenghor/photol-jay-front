@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { User, RegisterRequest, LoginRequest, LoginResponse } from '../models/user.interface';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3007/api/users';
+  private apiUrl = `${environment.apiUrl}/api/users`;
   private isLoggedInSubject = new BehaviorSubject<boolean>(!!this.getToken());
   public isLoggedIn$ = this.isLoggedInSubject.asObservable();
   private userNameSubject = new BehaviorSubject<string | null>(this.getUserName());
