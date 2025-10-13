@@ -1,12 +1,13 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Product } from '../../models/product.interface';
-import { CurrencyPipe } from '../../pipes/currency.pipe';
+import { ImageService } from '../../services/image.service';
+import { DEFAULT_IMAGE_BASE64 } from '../../constants/images';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe],
+  imports: [CommonModule],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss'
 })
@@ -15,13 +16,15 @@ export class ProductCardComponent {
   @Output() viewDetailsClicked = new EventEmitter<Product>();
   @Output() favoriteClicked = new EventEmitter<Product>();
 
+  constructor(private imageService: ImageService) {}
+
   isFavorite = false;
 
   get imageUrl(): string {
     if (this.product.images && this.product.images.length > 0) {
-      return `http://localhost:3007${this.product.images[0].url}`;
+      return this.imageService.getImageUrl(this.product.images[0].url);
     }
-    return 'assets/placeholder-image.jpg'; // Add a placeholder image in assets
+    return DEFAULT_IMAGE_BASE64;
   }
 
   getOriginalPrice(): number {

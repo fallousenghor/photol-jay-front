@@ -26,7 +26,7 @@
                class="thumbnail"
                [class.active]="i === currentImageIndex"
                (click)="currentImageIndex = i">
-            <img [src]="'http://localhost:3007' + img.url" [alt]="product.title + ' thumbnail'">
+            <img [src]="imageService.getImageUrl(img.url)" [alt]="product.title + ' thumbnail'">
           </div>
         </div>
       </div>

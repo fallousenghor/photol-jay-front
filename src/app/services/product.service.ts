@@ -31,7 +31,7 @@ export class ProductService {
   uploadImage(productId: string, file: File): Observable<any> {
     const formData = new FormData();
     formData.append('productId', productId);
-    formData.append('image', file);
+    formData.append('image', file); // Utilisation de 'image' pour correspondre au champ attendu par multer dans le backend
 
     return this.http.post(this.imageApiUrl, formData);
   }

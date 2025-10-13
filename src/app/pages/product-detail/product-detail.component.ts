@@ -6,6 +6,8 @@ import { Product } from '../../models/product.interface';
 import { LoaderComponent } from '../../components/loader/loader.component';
 import { UiService } from '../../services/ui.service';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
+import { ImageService } from '../../services/image.service';
+import { DEFAULT_IMAGE_BASE64 } from '../../constants/images';
 
 @Component({
   selector: 'app-product-detail',
@@ -23,7 +25,8 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
-    private uiService: UiService
+    private uiService: UiService,
+    public imageService: ImageService
   ) {}
 
   ngOnInit(): void {
@@ -76,9 +79,9 @@ export class ProductDetailComponent implements OnInit {
 
   getCurrentImageUrl(): string {
     if (this.product && this.product.images && this.product.images.length > 0) {
-      return 'http://localhost:3007' + this.product.images[this.currentImageIndex].url;
+      return this.imageService.getImageUrl(this.product.images[this.currentImageIndex].url);
     }
-    return 'assets/placeholder-image.jpg';
+    return DEFAULT_IMAGE_BASE64;
   }
 
   hasMultipleImages(): boolean {
