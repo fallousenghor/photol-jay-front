@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  // min-height: 100vh;
   padding: 20px;
   background: #f8f9fa;
 }
@@ -13,7 +13,7 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 40px;
   width: 100%;
-  max-width: 400px;
+  max-width: 600px;
   position: relative;
   z-index: 1;
 }
@@ -117,6 +117,7 @@
 @media (max-width: 480px) {
   .login-card {
     padding: 30px 20px;
+    min-width: 320px;
   }
 
   .login-title {
@@ -130,4 +131,5 @@
   .login-btn {
     padding: 10px 14px;
   }
+
 }
