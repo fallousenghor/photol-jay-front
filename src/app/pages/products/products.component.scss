@@ -1,102 +1,128 @@
-/* Mobile first approach */
+/* --- Conteneur principal --- */
 .products-container {
-    width: 100%;
-    min-height: 200px;
-    position: relative;
-    padding: 0.5rem;
-    margin: 0 auto;
-    max-width: 1920px; /* Augmenté pour accommoder 6 cartes confortablement */
-    background-color: #f8f9fa;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  padding: 0.75rem;
+  margin: 0 auto;
+  max-width: 1920px;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 
-    @media (min-width: 768px) {
-        padding: 2rem;
-        border-radius: 24px 24px 0 0;
-    }
+  // Sur tablette et plus
+  @media (min-width: 768px) {
+    padding: 2rem;
+    border-radius: 24px 24px 0 0;
+  }
 
-    @media (min-width: 1024px) {
-        padding: 2.5rem;
-    }
+  @media (min-width: 1024px) {
+    padding: 2.5rem 3rem;
+  }
 }
 
-
-
+/* --- Animation "tirer pour rafraîchir" --- */
 .pull-to-refresh {
-    position: absolute;
-    top: -60px;
-    left: 0;
-    right: 0;
-    height: 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    font-size: 0.9rem;
-    border-radius: 0 0 20px 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: -60px;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  color: white;
+  font-size: 0.85rem;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 
-    .refresh-icon {
-        margin-bottom: 8px;
-        animation: spin 1s linear infinite;
-    }
+  .refresh-icon {
+    margin-bottom: 6px;
+    animation: spin 1s linear infinite;
+    font-size: 1rem;
+  }
 }
 
+/* --- Texte si aucun produit --- */
 .no-products {
-    text-align: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: #555;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  margin: 3rem auto;
+  max-width: 360px;
+  transition: all 0.3s ease;
+
+  i {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: #adb5bd;
+  }
+
+  p {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  @media (min-width: 768px) {
     padding: 4rem 2rem;
-    color: #666;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    margin: 2rem auto;
-    max-width: 400px;
-
     i {
-        font-size: 4rem;
-        margin-bottom: 1.5rem;
-        color: #95a5a6;
-        opacity: 0.7;
+      font-size: 4rem;
     }
-
-    p {
-        font-size: 1.2rem;
-        font-weight: 500;
-        letter-spacing: -0.01em;
-    }
+  }
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
+/* --- Grille des produits --- */
 .products-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-    width: 100%;
-    padding: 0.5rem;
-    background-color: transparent;
+  display: grid;
+  width: 100%;
+  background-color: transparent;
+  gap: 0.75rem;
+  grid-template-columns: 1fr 1fr;
+  padding: 0.5rem 0.25rem;
+  justify-content: center;
+  align-items: stretch;
+  transition: all 0.3s ease;
 
-    @media (min-width: 768px) {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
-        padding: 0;
-    }
+  // Tablette (3 cartes)
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 0;
+  }
 
-    @media (min-width: 992px) {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 2rem;
-    }
+  // Bureau petit (4 cartes)
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.75rem;
+  }
 
-    @media (min-width: 1200px) {
-        grid-template-columns: repeat(5, 1fr);
-        gap: 2.5rem;
-    }
+  // Grand écran
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+  }
 
-    @media (min-width: 1400px) {
-        grid-template-columns: repeat(6, 1fr);
-        gap: 2.5rem;
-    }
+  // Très grand écran
+  @media (min-width: 1400px) {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2.25rem;
+  }
+}
+
+/* --- Animation du spinner --- */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
