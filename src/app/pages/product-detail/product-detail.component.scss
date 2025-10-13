@@ -5,6 +5,12 @@
   background: #ffffff;
 }
 
+@media (max-width: 768px) {
+  .product-detail-container {
+    padding: 1rem;
+  }
+}
+
 /* --- Bouton retour --- */
 .back-button {
   background: #f8f9fa;
@@ -313,6 +319,8 @@
     grid-template-columns: 1fr;
     gap: 20px;
     padding: 1rem;
+    max-width: 100%;
+    margin: 0 auto;
   }
 
   .product-image-section {
@@ -349,15 +357,40 @@
 
   .product-info-section {
     padding: 0 1rem;
+    text-align: center;
 
     .product-name {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
+    }
+
+    .price-section {
+      .current-price {
+        font-size: 2rem;
+      }
+    }
+
+    .description-section {
+      h2 {
+        font-size: 1.1rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+      }
     }
   }
 
   .seller-info {
     padding: 15px;
     margin: 1rem 0;
+
+    h3 {
+      font-size: 1.1rem;
+    }
+
+    .seller-name {
+      font-size: 0.9rem;
+    }
   }
 }
 
