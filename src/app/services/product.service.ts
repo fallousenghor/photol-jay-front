@@ -15,6 +15,7 @@ export class ProductService {
 
   getProducts(categoryId?: number, sortBy?: string, sortOrder?: 'asc' | 'desc'): Observable<Product[]> {
     let params = new HttpParams();
+    params = params.set('status', 'APPROVED');
     if (categoryId) {
       params = params.set('categoryId', categoryId.toString());
     }

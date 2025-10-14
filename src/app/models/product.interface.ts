@@ -29,7 +29,7 @@ export interface Product {
   user?: User;
   categoryId?: number | null;
   category?: Category | null;
-  isApproved: boolean;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED';
   priority: boolean;
   views: number;
   expiresAt: Date;

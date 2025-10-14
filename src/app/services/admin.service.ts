@@ -6,6 +6,10 @@ import { environment } from '../../environments/environment';
 export interface AdminStats {
   totalProducts: number;
   pendingApprovals: number;
+  expiringProducts: number;
+  rejectedToday: number;
+  vipActiveProducts: number;
+  avgModerationTime: number; 
   totalVipUsers: number;
   totalViews: number;
   totalModerations: number;
