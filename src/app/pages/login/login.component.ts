@@ -30,7 +30,9 @@ export class LoginComponent {
           this.authService.setToken(response.token);
           this.authService.setUserName(response.user.userName);
           this.authService.setUserId(response.user.id);
-          this.router.navigate(['/products']);
+          this.authService.setRole(response.user.role);
+          const redirectPath = response.user.role === 'ADMIN' ? '/admin' : '/products';
+          this.router.navigate([redirectPath]);
         },
         error: (error) => {
           this.errorMessage = error.error?.error || 'Erreur lors de la connexion';

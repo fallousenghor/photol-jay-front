@@ -6,6 +6,7 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { ForgetPasswordComponent } from './pages/forget-password/forget-password.component';
 import { AddProductComponent } from './pages/add-product/add-product.component';
 import { DefaultLayoutComponent } from './layouts/default-layout.component';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -18,7 +19,8 @@ export const routes: Routes = [
       { path: 'add-product', component: AddProductComponent },
       { path: 'login', component: LoginComponent },
       { path: 'signup', component: SignupComponent },
-      { path: 'forget-password', component: ForgetPasswordComponent }
+      { path: 'forget-password', component: ForgetPasswordComponent },
+      {path: 'admin', component: DashboardComponent}
     ]
   }
 ];

@@ -38,6 +38,13 @@ export class AuthService {
     this.isLoggedInSubject.next(false);
   }
 
+  logout(): void {
+    this.removeToken();
+    this.removeUserName();
+    this.removeUserId();
+    this.removeRole();
+  }
+
   setUserName(userName: string): void {
     localStorage.setItem('userName', userName);
     this.userNameSubject.next(userName);
@@ -63,5 +70,17 @@ export class AuthService {
 
   removeUserId(): void {
     localStorage.removeItem('userId');
+  }
+
+  setRole(role: string): void {
+    localStorage.setItem('userRole', role);
+  }
+
+  getRole(): string | null {
+    return localStorage.getItem('userRole');
+  }
+
+  removeRole(): void {
+    localStorage.removeItem('userRole');
   }
 }

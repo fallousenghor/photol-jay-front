@@ -1,0 +1,74 @@
+<div class="dashboard-container">
+  <app-headerdashboard [userName]="'Admin'"></app-headerdashboard>
+
+  <div class="dashboard-content">
+    <div class="welcome-section">
+      <h1>Welcome, Admin 👋</h1>
+      <p>Vue d'ensemble de la modération, des utilisateurs VIP et des statistiques de la plateforme.</p>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      Chargement des données...
+    </div>
+
+    <div *ngIf="!loading && dashboardData">
+      <div class="metrics-grid">
+        <app-matricecard
+          [title]="'Produits en attente'"
+          [value]="dashboardData.pendingApprovals"
+          [change]="0"
+          [icon]="'clock'"
+          [period]="'À modérer'">
+        </app-matricecard>
+
+        <app-matricecard
+          [title]="'Utilisateurs VIP'"
+          [value]="dashboardData.totalVipUsers"
+          [change]="0"
+          [icon]="'star'"
+          [period]="'Total VIP'">
+        </app-matricecard>
+
+        <app-matricecard
+          [title]="'Vues totales'"
+          [value]="dashboardData.totalViews"
+          [change]="0"
+          [icon]="'eye'"
+          [subtitle]="'Vues sur tous les produits'"
+          [isLarge]="true">
+        </app-matricecard>
+      </div>
+
+      <div class="secondary-metrics">
+        <app-matricecard
+          [title]="'Produits totaux'"
+          [value]="dashboardData.totalProducts"
+          [change]="0"
+          [icon]="'package'"
+          [subtitle]="'Tous les produits'">
+        </app-matricecard>
+
+        <app-matricecard
+          [title]="'Modérations'"
+          [value]="dashboardData.totalModerations"
+          [change]="0"
+          [icon]="'check-circle'"
+          [period]="'Actions totales'">
+        </app-matricecard>
+
+        <app-salechart [data]="dashboardData.approvalTrends" [title]="'Tendances Approbations'"></app-salechart>
+
+        <app-salerate [percentage]="dashboardData.totalVipUsers / dashboardData.totalProducts * 100 || 0" [label]="'VIP Rate'"></app-salerate>
+      </div>
+
+      <div class="bottom-section">
+        <app-ordermatrice
+          [pendingProducts]="pendingProducts"
+          (onApprove)="onApproveProduct($event)"
+          (onReject)="onRejectProduct($event, 'Rejeté par admin')">
+        </app-ordermatrice>
+        <app-recent [recentItems]="dashboardData.recentModerations" [title]="'Actions Récentes'"></app-recent>
+      </div>
+    </div>
+  </div>
+</div>

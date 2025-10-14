@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
+import { LOGO_IMAGE } from '../../constants/images';
 
 @Component({
   selector: 'app-navbar',
@@ -17,6 +18,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   notificationCount = 3;
   userInitials = '';
   isLoggedIn = false;
+  logoImage = LOGO_IMAGE;
   private subscriptions = new Subscription();
 
   constructor(private router: Router, private authService: AuthService) {}
