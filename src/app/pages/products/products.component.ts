@@ -7,6 +7,7 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.interface';
 import { UiService } from '../../services/ui.service';
 import { FilterService } from '../../services/filter.service';
+import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -24,14 +25,19 @@ export class ProductsComponent implements OnInit, OnDestroy {
   private readonly PULL_THRESHOLD = 80;
   isFavorite: any;
   private filterSubscription: Subscription = new Subscription();
+  private authSubscription: Subscription = new Subscription();
 
   currentCategoryId?: number;
+  isLoggedIn = false;
+  showAllProducts = false;
+  currentUserId?: number;
 
   constructor(
     private productService: ProductService,
     private uiService: UiService,
     private router: Router,
-    private filterService: FilterService
+    private filterService: FilterService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -40,10 +46,22 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.filterSubscription = this.filterService.selectedCategoryId$.subscribe(categoryId => {
       this.loadProducts(categoryId);
     });
+    // Subscribe to auth changes
+    this.authSubscription = this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+      this.isLoggedIn = isLoggedIn;
+      this.currentUserId = this.authService.getUserId() || undefined;
+      if (isLoggedIn && !this.showAllProducts) {
+        this.loadProducts();
+      } else if (!isLoggedIn) {
+        this.showAllProducts = false;
+        this.loadProducts();
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.filterSubscription.unsubscribe();
+    this.authSubscription.unsubscribe();
   }
 
   @HostListener('touchstart', ['$event'])
@@ -76,7 +94,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
   loadProducts(categoryId?: number | null): void {
     this.isLoading = true;
     this.currentCategoryId = categoryId || undefined;
-    this.productService.getProducts(this.currentCategoryId).subscribe({
+    const ownerId = this.isLoggedIn && !this.showAllProducts ? this.currentUserId : undefined;
+    this.productService.getProducts(this.currentCategoryId, undefined, undefined, ownerId).subscribe({
       next: (products) => {
         this.products = products;
         this.isLoading = false;
@@ -99,5 +118,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   onFavoriteToggle(product: Product): void {
     this.uiService.showSuccess(`${product.title} ${this.isFavorite ? 'retiré des' : 'ajouté aux'} favoris`);
+  }
+
+  toggleShowAllProducts(): void {
+    this.showAllProducts = !this.showAllProducts;
+    this.loadProducts();
   }
 }

@@ -7,6 +7,7 @@ import { LoaderComponent } from '../../components/loader/loader.component';
 import { UiService } from '../../services/ui.service';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
 import { ImageService } from '../../services/image.service';
+import { AuthService } from '../../services/auth.service';
 import { DEFAULT_IMAGE_BASE64 } from '../../constants/images';
 
 @Component({
@@ -20,16 +21,24 @@ export class ProductDetailComponent implements OnInit {
   product: Product | null = null;
   isLoading = true;
   currentImageIndex = 0;
+  isLoggedIn = false;
+  currentUserId?: number;
+  isOwner = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
     private uiService: UiService,
-    public imageService: ImageService
+    public imageService: ImageService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    // Initialize auth state
+    this.isLoggedIn = !!this.authService.getToken();
+    this.currentUserId = this.authService.getUserId() || undefined;
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.productService.getProduct(id).subscribe({
@@ -39,6 +48,9 @@ export class ProductDetailComponent implements OnInit {
           if (!product) {
             this.uiService.showError('Produit non trouvé');
             this.router.navigate(['/products']);
+          } else {
+            // Check if current user is the owner
+            this.isOwner = this.isLoggedIn && this.currentUserId === product.userId;
           }
         },
         error: (error) => {
@@ -86,5 +98,13 @@ export class ProductDetailComponent implements OnInit {
 
   hasMultipleImages(): boolean {
     return this.product ? (this.product.images?.length || 0) > 1 : false;
+  }
+
+  editProduct(): void {
+    if (this.product) {
+      this.router.navigate(['/add-product'], {
+        queryParams: { edit: this.product.id }
+      });
+    }
   }
 }

@@ -14,8 +14,6 @@ import { LOGO_IMAGE } from '../../constants/images';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   isDropdownOpen = false;
-  hasNotifications = true;
-  notificationCount = 3;
   userInitials = '';
   isLoggedIn = false;
   logoImage = LOGO_IMAGE;
@@ -71,4 +69,5 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
     this.isDropdownOpen = false;
   }
+
 }

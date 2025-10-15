@@ -23,6 +23,41 @@
   }
 }
 
+/* --- Header avec bouton toggle --- */
+.products-header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+
+  .toggle-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+
+    i {
+      font-size: 1rem;
+    }
+
+    // Responsive
+    @media (max-width: 480px) {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.8rem;
+    }
+  }
+}
+
 /* --- Animation "tirer pour rafraîchir" --- */
 .pull-to-refresh {
   position: absolute;

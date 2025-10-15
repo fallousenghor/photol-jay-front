@@ -13,9 +13,12 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getProducts(categoryId?: number, sortBy?: string, sortOrder?: 'asc' | 'desc'): Observable<Product[]> {
+  getProducts(categoryId?: number, sortBy?: string, sortOrder?: 'asc' | 'desc', ownerId?: number): Observable<Product[]> {
     let params = new HttpParams();
-    params = params.set('status', 'APPROVED');
+    // Only filter by APPROVED status when viewing all products (not own products)
+    if (!ownerId) {
+      params = params.set('status', 'APPROVED');
+    }
     if (categoryId) {
       params = params.set('categoryId', categoryId.toString());
     }
@@ -24,6 +27,9 @@ export class ProductService {
     }
     if (sortOrder) {
       params = params.set('sortOrder', sortOrder);
+    }
+    if (ownerId) {
+      params = params.set('ownerId', ownerId.toString());
     }
     return this.http.get<Product[]>(this.apiUrl, { params });
   }
@@ -34,6 +40,10 @@ export class ProductService {
 
   createProduct(product: CreateProduct): Observable<Product> {
     return this.http.post<Product>(this.apiUrl, product);
+  }
+
+  updateProduct(id: string, product: Partial<CreateProduct>): Observable<Product> {
+    return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
   }
 
   uploadImage(productId: string, file: File): Observable<any> {

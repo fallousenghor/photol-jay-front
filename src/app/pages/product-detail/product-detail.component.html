@@ -36,6 +36,12 @@
       <div class="product-header">
         <div class="title-section">
           <h1 class="product-name">{{product.title}}</h1>
+          <div class="product-actions" *ngIf="isOwner">
+            <button class="edit-btn" (click)="editProduct()">
+              <i class="fas fa-edit"></i>
+              Modifier
+            </button>
+          </div>
         </div>
       </div>
 

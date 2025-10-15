@@ -1,6 +1,6 @@
 <div class="add-product-container">
   <div class="add-product-card">
-    <h2 class="add-product-title">Ajouter un Produit</h2>
+    <h2 class="add-product-title">{{ isEditing ? 'Modifier le Produit' : 'Ajouter un Produit' }}</h2>
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="add-product-form">
       <div class="form-group">
         <label for="title" class="form-label">Titre</label>
@@ -39,7 +39,7 @@
           <img *ngFor="let img of images" [src]="img.url" class="preview-img" alt="Preview" />
         </div>
       </div>
-      <button type="submit" [disabled]="productForm.invalid" class="add-product-btn">Ajouter le Produit</button>
+      <button type="submit" [disabled]="productForm.invalid" class="add-product-btn">{{ isEditing ? 'Modifier le Produit' : 'Ajouter le Produit' }}</button>
     </form>
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
     <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>

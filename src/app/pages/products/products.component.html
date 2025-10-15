@@ -6,7 +6,12 @@
         <span>Relâchez pour actualiser</span>
     </div>
 
-
+    <div class="products-header" *ngIf="isLoggedIn">
+        <button class="toggle-btn" (click)="toggleShowAllProducts()">
+            <i class="fas fa-exchange-alt"></i>
+            {{ showAllProducts ? 'Voir mes produits' : 'Voir tous les produits' }}
+        </button>
+    </div>
 
     <app-loader [show]="isLoading"></app-loader>
 
