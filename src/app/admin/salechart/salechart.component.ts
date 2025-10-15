@@ -4,8 +4,7 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/cor
   selector: 'app-salechart',
   imports: [],
   templateUrl: './salechart.component.html',
-  styleUrl: './salechart.component.scss',
-  inputs: ['data', 'title', 'xAxisLabel', 'yAxisLabel', 'chartType', 'color']
+  styleUrl: './salechart.component.scss'
 })
 export class SalechartComponent implements OnInit, OnChanges {
   @Input() data: any[] = [];

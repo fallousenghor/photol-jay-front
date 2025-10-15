@@ -1,20 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
 
 interface ModerationAction {
   id: number;
   productTitle: string;
   moderatorName: string;
   action: 'APPROVED' | 'REJECTED';
-  date: string;
+  date: Date | string;
   reason?: string;
 }
 
 @Component({
   selector: 'app-recent',
-  standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './recent.component.html',
   styleUrl: './recent.component.scss'
 })
@@ -22,25 +21,19 @@ export class RecentComponent {
   @Input() recentItems: ModerationAction[] = [];
   @Input() title: string = 'Actions Récentes';
 
-  getActionColor(action: 'APPROVED' | 'REJECTED'): string {
-    return action === 'APPROVED' ? '#4CAF50' : '#f44336';
+  searchTerm: string = '';
+  selectedCategory: string = 'All Category';
+
+  get filteredItems(): ModerationAction[] {
+    if (!this.recentItems) return [];
+    if (!this.searchTerm) return this.recentItems;
+    return this.recentItems.filter(item =>
+      item.productTitle.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      item.moderatorName.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
   }
 
-  getActionIcon(action: 'APPROVED' | 'REJECTED'): string {
-    return action === 'APPROVED' ? 'check_circle' : 'cancel';
-  }
-  
-  getTimeAgo(date: string): string {
-    const now = new Date();
-    const actionDate = new Date(date);
-    const diffInMinutes = Math.floor((now.getTime() - actionDate.getTime()) / (1000 * 60));
-
-    if (diffInMinutes < 60) return `il y a ${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''}`;
-    
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return `il y a ${diffInHours} heure${diffInHours > 1 ? 's' : ''}`;
-    
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `il y a ${diffInDays} jour${diffInDays > 1 ? 's' : ''}`;
+  getActionClass(action: string): string {
+    return action === 'APPROVED' ? 'approved' : 'rejected';
   }
 }

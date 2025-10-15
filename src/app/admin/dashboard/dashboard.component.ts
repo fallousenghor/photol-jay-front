@@ -1,104 +1,229 @@
 import { Component, OnInit } from '@angular/core';
-import { HeaderdashboardComponent } from "../headerdashboard/headerdashboard.component";
-import { MatricecardComponent } from "../matricecard/matricecard.component";
-import { SalechartComponent } from "../salechart/salechart.component";
-import { OrdermatriceComponent } from "../ordermatrice/ordermatrice.component";
-import { RecentComponent } from "../recent/recent.component";
-import { SalerateComponent } from "../salerate/salerate.component";
-import { AdminService, AdminStats, PendingProduct } from '../../services/admin.service';
 import { CommonModule } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormsModule } from '@angular/forms';
+import { AdminService, AdminStats, PendingProduct } from '../../services/admin.service';
+import { ToastService } from '../../services/toast.service';
+
+import { ApiResponse } from '../../types/api-response';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
   imports: [
     CommonModule,
-    MatProgressSpinnerModule,
-    HeaderdashboardComponent,
-    MatricecardComponent,
-    SalechartComponent,
-    OrdermatriceComponent,
-    RecentComponent,
-    SalerateComponent
+    FormsModule,
+    // MatricecardComponent,
+    // SalechartComponent,
+    // SalerateComponent,
+    // RecentComponent
   ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  dashboardData: AdminStats | null = null;
-  pendingProducts: PendingProduct[] = [];
   loading = true;
-  previousStats: AdminStats | null = null;
+  dashboardData: AdminStats['data'] | null = null;
+  pendingProducts: PendingProduct[] = [];
+  selectedProduct: PendingProduct | null = null;
+  showRejectDialog = false;
+  rejectReason = '';
+  productToReject: string | null = null;
 
-  constructor(private adminService: AdminService) {}
+  // Propriétés pour la table des actions récentes
+  searchTerm = '';
+  filterType = 'all';
+  sortBy = 'date';
+  sortDirection = 'desc';
+  currentPage = 1;
+  pageSize = 10;
+  totalPages = 1;
+  filteredActions: any[] = [];
+
+  // Méthodes pour la gestion de la table
+  sort(column: string): void {
+    if (this.sortBy === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortBy = column;
+      this.sortDirection = 'asc';
+    }
+    this.updateFilteredActions();
+  }
+
+  onPageSizeChange(): void {
+    this.currentPage = 1;
+    this.updateFilteredActions();
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updateFilteredActions();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updateFilteredActions();
+    }
+  }
+
+  private updateFilteredActions(): void {
+    if (!this.dashboardData?.recentModerations) return;
+
+    let filtered = [...this.dashboardData.recentModerations];
+
+    // Filtrage par recherche
+    if (this.searchTerm) {
+      const search = this.searchTerm.toLowerCase();
+      filtered = filtered.filter(action =>
+        action.productTitle.toLowerCase().includes(search) ||
+        action.moderatorName.toLowerCase().includes(search)
+      );
+    }
+
+    // Filtrage par type
+    if (this.filterType !== 'all') {
+      filtered = filtered.filter(action =>
+        action.action.toLowerCase() === this.filterType
+      );
+    }
+
+    // Tri
+    filtered.sort((a, b) => {
+      let comparison = 0;
+      switch (this.sortBy) {
+        case 'id':
+          comparison = a.id - b.id;
+          break;
+        case 'product':
+          comparison = a.productTitle.localeCompare(b.productTitle);
+          break;
+        case 'moderator':
+          comparison = a.moderatorName.localeCompare(b.moderatorName);
+          break;
+        case 'action':
+          comparison = a.action.localeCompare(b.action);
+          break;
+        case 'date':
+          comparison = new Date(a.date).getTime() - new Date(b.date).getTime();
+          break;
+        default:
+          return 0;
+      }
+      return this.sortDirection === 'asc' ? comparison : -comparison;
+    });
+
+    // Pagination
+    this.totalPages = Math.ceil(filtered.length / this.pageSize);
+    const start = (this.currentPage - 1) * this.pageSize;
+    this.filteredActions = filtered.slice(start, start + this.pageSize);
+  }
+
+  constructor(
+    private adminService: AdminService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadDashboardData();
-    // Rafraîchir les données toutes les 5 minutes
-    setInterval(() => this.loadDashboardData(), 5 * 60 * 1000);
-  }
-
-  getDailyChange(value: number, key: keyof AdminStats): number {
-    if (!this.previousStats || !value) return 0;
-    return ((value - (this.previousStats[key] as number)) / (this.previousStats[key] as number || 1)) * 100;
   }
 
   loadDashboardData(): void {
     this.loading = true;
-    // Sauvegarder les stats précédentes pour calculer les variations
-    if (this.dashboardData) {
-      this.previousStats = {...this.dashboardData};
-    }
 
     this.adminService.getAdminStats().subscribe({
-      next: (data) => {
-        this.dashboardData = data;
-        this.loading = false;
-        // Update pending approvals count to use status-based query
+      next: (response: AdminStats) => {
+        console.log('Stats chargées:', response);
+        if (response.success && response.data) {
+          this.dashboardData = response.data;
+        } else {
+          this.dashboardData = null;
+          console.warn('Pas de données de statistiques dans la réponse');
+          this.toastService.show('Erreur lors du chargement des statistiques', 'error');
+        }
+
+        // Charger les produits en attente
         this.adminService.getPendingProducts().subscribe({
-          next: (pendingProducts) => {
-            this.pendingProducts = pendingProducts;
-            if (this.dashboardData) {
-              this.dashboardData.pendingApprovals = pendingProducts.length;
+          next: (productsResponse: ApiResponse<PendingProduct[]>) => {
+            console.log('Réponse des produits en attente:', productsResponse);
+            if (productsResponse.success && productsResponse.data) {
+              this.pendingProducts = productsResponse.data;
+              console.log('Produits en attente mis à jour:', this.pendingProducts);
+            } else {
+              this.pendingProducts = [];
+              console.warn('Pas de produits en attente dans la réponse');
             }
+            this.loading = false;
           },
           error: (error) => {
-            console.error("Erreur chargement produits en attente:", error);
+            console.error('Erreur lors du chargement des produits en attente:', error);
+            this.pendingProducts = [];
+            this.loading = false;
+            this.toastService.show('Erreur lors du chargement des produits en attente', 'error');
           }
         });
       },
       error: (error) => {
-        console.error("Erreur chargement stats admin:", error);
+        console.error('Erreur lors du chargement des statistiques:', error);
+        this.dashboardData = null;
+        this.pendingProducts = [];
         this.loading = false;
+        this.toastService.show('Erreur lors du chargement des données', 'error');
       }
     });
+  }
+
+  showProductDetails(product: PendingProduct): void {
+    this.selectedProduct = product;
   }
 
   onApproveProduct(productId: number): void {
-    if (!productId) return;
     this.loading = true;
-    this.adminService.approveProduct(productId).subscribe({
+    this.adminService.moderateProduct(productId, 'APPROVED').subscribe({
       next: () => {
-        console.log('Produit approuvé avec succès');
+        this.toastService.show('Produit approuvé avec succès', 'success');
         this.loadDashboardData();
+        this.selectedProduct = null;
       },
       error: (error) => {
         console.error('Erreur lors de l\'approbation du produit:', error);
+        this.toastService.show('Erreur lors de l\'approbation du produit', 'error');
         this.loading = false;
       }
     });
   }
 
-  onRejectProduct({ productId, reason }: { productId: number; reason: string }): void {
-    if (!productId || !reason) return;
+  openRejectDialog(productId: number): void {
+    this.productToReject = productId.toString();
+    this.showRejectDialog = true;
+    this.rejectReason = '';
+  }
+
+  closeRejectDialog(): void {
+    this.showRejectDialog = false;
+    this.rejectReason = '';
+    this.productToReject = null;
+  }
+
+  confirmReject(): void {
+    if (!this.rejectReason.trim() || !this.productToReject) {
+      this.toastService.show('Veuillez fournir une raison pour le rejet', 'error');
+      return;
+    }
+
     this.loading = true;
-    this.adminService.rejectProduct(productId, reason).subscribe({
+    this.adminService.moderateProduct(parseInt(this.productToReject), 'REJECTED', this.rejectReason).subscribe({
       next: () => {
-        console.log('Produit rejeté avec succès');
+        this.toastService.show('Produit rejeté avec succès', 'success');
+        this.closeRejectDialog();
         this.loadDashboardData();
+        this.selectedProduct = null;
       },
       error: (error) => {
         console.error('Erreur lors du rejet du produit:', error);
+        this.toastService.show('Erreur lors du rejet du produit', 'error');
         this.loading = false;
       }
     });

@@ -2,20 +2,45 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { ApiResponse } from '../types/api-response';
 
-export interface AdminStats {
+export interface AdminStatsData {
   totalProducts: number;
-  pendingApprovals: number;
-  expiringProducts: number;
-  rejectedToday: number;
-  vipActiveProducts: number;
-  avgModerationTime: number; 
-  totalVipUsers: number;
+  pendingProducts: number;
+  approvedProducts: number;
+  rejectedProducts: number;
+  totalUsers: number;
+  vipUsers: number;
   totalViews: number;
   totalModerations: number;
-  recentModerations: any[];
-  approvalTrends: any[];
-  viewTrends: any[];
+  recentModerations: Array<{
+    id: number;
+    productTitle: string;
+    moderatorName: string;
+    action: 'APPROVED' | 'REJECTED';
+    date: Date;
+    reason?: string;
+  }>;
+  approvalTrends: Array<{
+    month: string;
+    approvals: number;
+    views: number;
+  }>;
+  viewTrends: Array<{
+    month: string;
+    views: number;
+  }>;
+}
+
+export type AdminStats = ApiResponse<AdminStatsData>;
+
+export interface VipUser {
+  id: number;
+  email: string;
+  userName: string;
+  isVip: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface PendingProduct {
@@ -42,23 +67,22 @@ export class AdminService {
     return this.http.get<AdminStats>(`${this.apiUrl}/api/admin/stats`);
   }
 
-  getPendingProducts(): Observable<PendingProduct[]> {
-    return this.http.get<PendingProduct[]>(`${this.apiUrl}/api/admin/pending-products`);
+  getPendingProducts(): Observable<ApiResponse<PendingProduct[]>> {
+    return this.http.get<ApiResponse<PendingProduct[]>>(`${this.apiUrl}/api/admin/pending-products`);
   }
 
-  approveProduct(productId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/admin/products/${productId}/approve`, { productId });
+  moderateProduct(productId: number, action: 'APPROVED' | 'REJECTED', reason?: string): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.apiUrl}/api/admin/products/${productId}/moderate`, {
+      action,
+      reason
+    });
   }
 
-  rejectProduct(productId: number, reason: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/admin/products/${productId}/reject`, { productId, reason });
+  getVipUsers(): Observable<ApiResponse<VipUser[]>> {
+    return this.http.get<ApiResponse<VipUser[]>>(`${this.apiUrl}/api/admin/vip-users`);
   }
 
-  getVipUsers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/api/admin/vip-users`);
-  }
-
-  toggleVipStatus(userId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/admin/users/${userId}/toggle-vip`, { userId });
+  toggleVipStatus(userId: number): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.apiUrl}/api/admin/users/${userId}/toggle-vip`, { userId });
   }
 }

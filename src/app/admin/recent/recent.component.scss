@@ -1,120 +1,54 @@
 @import '../variables.scss';
 
-/* === Recent Actions Section === */
-.recent-actions {
+// recent-orders.component.scss
+.recent-orders-card {
   background: $bg-primary;
   border-radius: $border-radius;
   padding: 1.5rem;
   box-shadow: $shadow-sm;
   border: 1px solid $border-color;
 
-  h3 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: $text-primary;
-    margin: 0 0 1.5rem 0;
-  }
-
-  .no-actions {
-    text-align: center;
-    color: $text-secondary;
-    padding: 2rem;
-    background: $bg-secondary;
-    border-radius: $border-radius;
-  }
-
-  .actions-list {
+  .card-header {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
 
-    .action-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      padding: 1rem;
-      background: $bg-secondary;
-      border-radius: $border-radius;
+    h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: $text-primary;
+      margin: 0 0 0.25rem 0;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: $text-secondary;
+      margin: 0;
+    }
+
+    .export-btn {
+      background: transparent;
+      color: $text-primary;
+      border: 1px solid $border-color;
+      padding: 0.5rem 1rem;
+      border-radius: $border-radius-sm;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
       transition: $transition;
 
       &:hover {
-        background: darken($bg-secondary, 2%);
-      }
-
-      .action-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 2.5rem;
-        height: 2.5rem;
-        background: $bg-primary;
-        border-radius: 50%;
-
-        mat-icon {
-          font-size: 1.25rem;
-          width: 1.25rem;
-          height: 1.25rem;
-        }
-      }
-
-      .action-content {
-        flex: 1;
-
-        .action-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 0.25rem;
-
-          .product {
-            font-weight: 500;
-            color: $text-primary;
-          }
-
-          .action-time {
-            font-size: 0.875rem;
-            color: $text-secondary;
-          }
-        }
-
-        .action-details {
-          font-size: 0.875rem;
-          color: $text-secondary;
-
-          .moderator {
-            font-weight: 500;
-          }
-
-          .reason {
-            margin-left: 0.25rem;
-          }
-        }
+        background: $bg-hover;
       }
     }
-  }
-}
-
-/* === Orders Section (table + filters) === */
-.orders-section {
-  background: $bg-primary;
-  border-radius: $border-radius;
-  padding: 1.5rem;
-  box-shadow: $shadow-sm;
-  border: 1px solid $border-color;
-  margin-top: 2rem;
-
-  h3 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: $text-primary;
-    margin-bottom: 1.5rem;
   }
 
   .filters {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 1rem;
     margin-bottom: 1.5rem;
+    flex-wrap: wrap;
 
     .search-input,
     .category-select {
